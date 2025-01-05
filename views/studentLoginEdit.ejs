@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Student</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+        }
+
+        nav {
+            background-color: #16a085;
+            padding: 10px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        nav input[type="search"] {
+            height: 40px;
+            width: 300px;
+            padding: 0 15px;
+            border: none;
+            border-radius: 20px;
+            outline: none;
+            font-size: 16px;
+            color: #333;
+        }
+
+        nav input[type="search"]::placeholder {
+            color: #aaa;
+        }
+
+        nav input[type="submit"] {
+            height: 40px;
+            width: 100px;
+            border: none;
+            border-radius: 20px;
+            background-color: #2ecc71;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        nav input[type="submit"]:hover {
+            background-color: #27ae60;
+        }
+
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            max-width: 300px;
+            margin: 40px auto 0;
+            text-align: center;
+            font-family: arial;
+        }
+
+        .title {
+            color: grey;
+            font-size: 18px;
+        }
+
+        .button {
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 5px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .button2 {
+            background-color: #008CBA;
+        }
+
+        /* Blue */
+        .button3 {
+            background-color: #f44336;
+        }
+
+
+        .message {
+            color: red;
+            font-size: 18px;
+            margin: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <form action="/admin/searchStudent" method="post">
+            <input type="search" id="searchBox" name="studentId" placeholder="Enter Student ID" />
+            <input id="searchButton" type="submit" value="Search">
+        </form>
+    </nav>
+
+    <% if (locals.Student) { %>
+        <div class="card">
+            <img src="https://t3.ftcdn.net/jpg/07/62/37/24/360_F_762372494_0jJCh4efbXYIAkKJmXxK2eWS8wuaVpQS.jpg" alt=""
+                style="width:100%">
+            <h1>
+                <%= Student.name %>
+            </h1>
+            <p>
+                <%= Student.studentID %>
+            </p>
+            <div style="margin: 5px 0 5px;">
+                <button class="button button2">Edit</button>
+                <a class="button button3" href="/admin/deleteStudent/<%= Student.studentID %>">Delete</a>
+
+
+            </div>
+        </div>
+        <% } %>
+
+        <% if (locals.message) { %>
+            <p class="message">
+                <%= message %>
+            </p>
+        <% } %>
+</body>
+
+</html>

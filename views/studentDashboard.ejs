@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <title>Student | <%= Student ? Student.name : "??" %></title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+        * {
+            font-family: "Roboto", serif;
+            font-style: normal;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f4f6;
+        }
+
+        .dashboard-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 20%;
+            background: #16a085;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: white;
+        }
+
+        .profile-circle {
+            width: 100px;
+            height: 100px;
+            background: #12876f;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+
+        .Student-name {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .sidebar a {
+            display: block;
+            width: 80%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+            text-align: center;
+            background: #12876f;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .sidebar a:hover {
+            background: #0f6a5b;
+        }
+
+        .main-content {
+            width: 80%;
+            padding: 20px;
+        }
+
+        .login-button {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .login-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <% if (locals.Student) { %>
+        <div class="dashboard-container">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="profile-circle"></div>
+                <div class="Student-name"><%= Student.name %></div>
+                <p>ID: <%= Student.id %></p>
+                <a href="/student/changePassword">Change Password &nbsp; <i class="fa-solid fa-key"></i> </a>
+                <a href="/student/logout">Log Out &nbsp; <i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Links will be here -->
+            </div>
+        </div>
+    <% } else { %>
+        <a class="login-button" href="/">Login</a>
+    <% } %>
+</body>
+
+</html>
