@@ -1,2 +1,2 @@
 # computronics_login_portal
-A portal for students and admins login
+Web portal for students and admins login of Computronics
