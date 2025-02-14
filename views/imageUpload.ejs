@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Student Photo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+
+        /* for login button */
+        .login-button {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .login-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <% if (locals.Admin) { %>
+    <div class="container">
+        <h2>Student Photo Upload</h2>
+        <form action="/admin/submit" method="POST" enctype="multipart/form-data">
+            <label for="studentId">Student ID:</label>
+            <input type="text" id="studentId" name="studentId" placeholder="Enter Student ID" required>
+            
+            <label for="studentPhoto">Upload Photo:</label>
+            <input type="file" id="studentPhoto" name="studentPhoto" accept="image/*" required>
+            
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+    <% } else { %>
+        <a class="login-button" href="/admin/login">Login</a>
+    <% } %>
+</body>
+</html>

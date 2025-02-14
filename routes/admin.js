@@ -4,7 +4,7 @@ const Admin = require('../models/Admin')
 const { validateToken } = require('../services/authentication')
 const { checkForAuth, verifyRole } = require('../middlewares/auth')
 const { sendMail } = require('../services/mail')
-const { registerStudent, searchStudent, deleteStudent } = require('../controllers/adminController')
+const { registerStudent, searchStudent, deleteStudent, studentImageUpload } = require('../controllers/adminController')
 
 
 // Admin Control Panel
@@ -123,6 +123,13 @@ router.get('/searchStudent',verifyRole('Admin'),(req, res)=>{
 
 // for searhcing student
 router.post('/searchStudent', verifyRole('Admin'), searchStudent)
+
+// for student image upload:
+router.get('/imageUpload', verifyRole('Admin'), (req, res)=>{
+    return res.render('imageUpload', { Admin: req.User })
+})
+// post route for student image upload:
+router.post('/submit', verifyRole('Admin'), studentImageUpload)
 
 // Student delete route
 router.get('/admin/deleteStudent/:id', (req, res)=>{

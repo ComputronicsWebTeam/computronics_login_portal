@@ -1,6 +1,12 @@
 const Student = require('../models/Student')
+const StudentImage = require('../models/studentImage')
+const multer = require('multer');
 const { sendMail } = require('../services/mail')
 
+
+// Multer Configuration for File Uploads
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage }).single('studentPhoto');
 
 // New Student Register Controller Function:
 async function registerStudent(req, res) {
@@ -66,6 +72,30 @@ const searchStudent = async (req, res) => {
     }
 }
 
+// student Image upload function:
+async function studentImageUpload(req, res) {
+    upload(req, res, async (err) => {
+        if (err) {
+            return res.status(400).send("Error uploading file.");
+        }
+
+        const newStudentImage = new StudentImage({
+            studentId: req.body.studentId,
+            image: {
+                data: req.file.buffer,
+                contentType: req.file.mimetype
+            }
+        });
+
+        try {
+            await newStudentImage.save();
+            res.send("File uploaded successfully!");
+        } catch (error) {
+            res.status(500).send("Error saving to database.");
+        }
+    })
+}
+
 
 // Student delete function:
 async function deleteStudent(req, res) {
@@ -91,5 +121,4 @@ async function deleteStudent(req, res) {
 }
 
 
-
-module.exports = { registerStudent, searchStudent, deleteStudent, }
+module.exports = { registerStudent, searchStudent, deleteStudent, studentImageUpload}
