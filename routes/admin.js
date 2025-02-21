@@ -4,7 +4,57 @@ const Admin = require('../models/Admin')
 const { validateToken } = require('../services/authentication')
 const { checkForAuth, verifyRole } = require('../middlewares/auth')
 const { sendMail } = require('../services/mail')
-const { registerStudent, searchStudent, deleteStudent, studentImageUpload } = require('../controllers/adminController')
+const { registerStudent, searchStudent, deleteStudent, studentImageUpload,
+    dcaResultUpdate
+ } = require('../controllers/adminController')
+
+
+// -------------------------------------------------------------------------------
+// Only for offline USE not for Production
+
+router.get('/register', (req, res) => {
+    res.render('adminRegister')
+})
+
+
+router.post('/register', async (req, res) => {
+    const { name, email, password } = req.body
+
+    try {
+        // Check if the email already exists
+        const existingAdmin = await Admin.findOne({ email })
+        if (existingAdmin) {
+            return res.status(400).send(`This email : ${email} is already exist`)
+        }
+
+            await Admin.create({ name, email, password })
+            res.send('Admin Registration Successfull')
+
+        // Sending suceesfull email:
+        const sub = 'Welcome to Computronics Web Portal | Admin Login Credential'
+        const message = 
+`Dear ${name},
+
+Congratulations on successfully registering as an Admin on the Computronics Web Portal.
+
+Here are your login credentials:
+ID: ${email}
+Password: ${password}
+
+Please keep this information confidential.
+
+Thank You,
+Computronics`
+        
+        sendMail(email, sub, message)
+
+    } catch (err) {
+        console.error('Error during registration:', err)
+        res.status(500).send('An error occurred during registration')
+    }
+})
+//  not for production 
+// ------------------------------------------------------------------------------------------
 
 
 // Admin Control Panel
@@ -38,6 +88,7 @@ router.post('/login', async (req, res) => {
         } else if (err.message === 'Incorrect password') {
             error = 'Incorrect Password'
         }
+        console.error('Login error:', err)
         return res.render('adminLogin', { error })
     }
 })
@@ -50,6 +101,8 @@ router.get('/logout', (req, res) => {
 // Password Change Route:
 
 router.get('/changePassword', verifyRole('Admin'),(req, res) => {
+    console.log(req.User);
+    
     res.render('adminPasswordChange', { Admin: req.User })
 })
 
@@ -101,6 +154,7 @@ Computronics
 `;
         sendMail(admin.email, sub, message);
     } catch (err) {
+        console.error('Error changing password:', err);
         res.status(500).send('An error occurred while changing the password');
     }
 });
@@ -133,8 +187,16 @@ router.post('/submit', verifyRole('Admin'), studentImageUpload)
 
 // Student delete route
 router.get('/admin/deleteStudent/:id', (req, res)=>{
-    
+    console.log(req.params.id);
 });
 
+
+
+// ------------------------------------------------------------
+// Result and Other Links:
+
+router.get('/dca_result_update',(req, res)=>{
+    res.render('dcaResult')
+})
 
 module.exports = router

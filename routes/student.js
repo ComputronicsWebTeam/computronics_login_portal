@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {StudentLogin, StudentChangePassword} = require('../controllers/studentController')
+const {StudentLogin, StudentChangePassword, P_info} = require('../controllers/studentController')
 const { verifyRole } = require('../middlewares/auth')
 const { validateToken } = require('../services/authentication')
 
@@ -23,6 +23,8 @@ router.get('/login',(req, res)=>{
 })
 
 router.post('/login', StudentLogin)
+
+router.get('/p_info', verifyRole('Student'), P_info);
 
 // Student Logout
 router.get('/logout', (req, res) => {

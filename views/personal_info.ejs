@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            text-align: center;
+            background-color: #2d3e50;
+            color: white;
+            padding: 30px 0;
+        }
+        header h1 {
+            font-size: 36px;
+            margin: 0;
+        }
+        header p {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .profile_image{
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-color: #12876f;
+        }
+        .container h3 {
+            font-size: 18px;
+            color: #2d3e50;
+            margin: 10px 0;
+        }
+        .container h3 span {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Computronics</h1>
+        <p>A Gateway to Computer World</p>
+    </header>
+
+    <div class="container">
+        <img class="profile_image" src="<%= imageSrc %>" alt="Student Image" />
+
+        <h3>Name: <span><%= s_info.name %></span></h3>
+        <h3>Father's Name: <span><%= s_info.fatherName %></span></h3>
+        <h3>D.O.B: <span><%= s_info.dob %></span></h3>
+        <h3>D.O.A (Admission): <span><%= s_info.doa %></span></h3>
+        <h3>Address: <span><%= s_info.address %></span></h3>
+        <h3>Contact No.: <span><%= s_info.contact %></span></h3>
+        <h3>Mail-ID: <span><%= s_info.email %></span></h3>
+        <h3>Name of School/College: <span><%= s_info.schoolOrCollege %></span></h3>
+
+        <div class="button-container">
+            <button class="btn" onclick="window.print()">Print</button>
+        </div>
+    </div>  `
+</body>
+</html>

@@ -1,5 +1,6 @@
 const Student = require('../models/Student')
 const StudentImage = require('../models/studentImage')
+const dcaResult = require('../models/dcaResult')
 const multer = require('multer');
 const { sendMail } = require('../services/mail')
 
@@ -7,6 +8,7 @@ const { sendMail } = require('../services/mail')
 // Multer Configuration for File Uploads
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage }).single('studentPhoto');
+
 
 // New Student Register Controller Function:
 async function registerStudent(req, res) {
@@ -58,11 +60,11 @@ const searchStudent = async (req, res) => {
         const { studentId } = req.body; // Extract studentId from the request body
         const student = await Student.findOne({ studentID: studentId }); // Use studentID instead of studentId
 
-        if(!student){
-            return res.render('studentLoginEdit', {message: 'Student not found'})
+        if (!student) {
+            return res.render('studentLoginEdit', { message: 'Student not found' })
         }
-        return res.render('studentLoginEdit',{Student: student})
-        
+        return res.render('studentLoginEdit', { Student: student })
+
     } catch (error) {
         console.error('Error searching for student:', error);
         res.status(500).json({
@@ -100,12 +102,12 @@ async function studentImageUpload(req, res) {
 // Student delete function:
 async function deleteStudent(req, res) {
     try {
-        const studentID = req.query.id; 
+        const studentID = req.query.id;
         if (!studentID) {
             return res.status(400).json({ error: 'Student ID is required' });
         }
         console.log('Deleting student with ID:', studentID);
-        
+
         // Remove the student from the database based on the studentID field
         const result = await Student.findOneAndDelete({ studentID });
 
@@ -121,4 +123,48 @@ async function deleteStudent(req, res) {
 }
 
 
-module.exports = { registerStudent, searchStudent, deleteStudent, studentImageUpload}
+//  for results and other links:
+async function dcaResultUpdate(req, res) {
+    const studentID = 'DCAB301';
+    const results = [
+        {
+            subject: 'subject1',
+            theory: 70,
+            practical: 75
+        },
+        {
+            subject: 'subject2',
+            theory: 80,
+            practical: 85
+        }
+    ];
+
+    try {
+        // Check if the student already exists in the database
+        let existingResult = await dcaResult.findOne({ studentID });
+
+        if (existingResult) {
+            // If the student exists, update their results
+            existingResult.results = results; // Replace the existing results array
+            await existingResult.save(); // Save the updated document
+
+            return res.status(200).json({ message: 'DCA result updated successfully', data: existingResult });
+        } else {
+            // If the student doesn't exist, create a new record
+            const newDcaResult = new dcaResult({ studentID, results });
+            await newDcaResult.save(); // Save the new document
+
+            return res.status(201).json({ message: 'DCA result created successfully', data: newDcaResult });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'An error occurred', error });
+    }
+
+
+}
+
+
+module.exports = { registerStudent, searchStudent, deleteStudent, studentImageUpload,
+    dcaResultUpdate,
+ }
