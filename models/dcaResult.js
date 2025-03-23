@@ -1,20 +1,29 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-const dca_result_schema = mongoose.Schema({
-    // a specification id for student:
-    studentID: {
-        type: String,
-        required: [true, 'Student ID is required'],
-        unique: true,
+const dcaResultSchema = new mongoose.Schema(
+    {
+        studentID: { type: String, required: true, unique: true },
+        dca1a: Number,
+        dca1b: Number,
+        dca2a: Number,
+        dca2b: Number,
+        dca2c: Number,
+        dca3a: Number,
+        dca3b: Number,
+        dca3c: Number,
+        dcal1a: Number,
+        dcal1b: Number,
+        dcal2a: Number,
+        dcal2b: Number,
+        dcal2c: Number,
+        dcal3a: Number,
+        projectp1: Number,
+        dcal4a: Number,
+        projectp2: Number,
     },
-    results: [
-        {
-            subject: {type: String, unique: true, required: true},
-            theory: {type: Number, required: true},
-            practical: {type: Number, required: true},
-        }
-    ]
-});
+    { timestamps: true } // This ensures createdAt and updatedAt are automatically added
+);
 
-const dcaResult = mongoose.model('dcaResult', dca_result_schema);
+const dcaResult = mongoose.model('dcaResult', dcaResultSchema);
+
 module.exports = dcaResult;

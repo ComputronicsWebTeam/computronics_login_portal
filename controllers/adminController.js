@@ -124,47 +124,66 @@ async function deleteStudent(req, res) {
 
 
 //  for results and other links:
-async function dcaResultUpdate(req, res) {
-    const studentID = 'DCAB301';
-    const results = [
-        {
-            subject: 'subject1',
-            theory: 70,
-            practical: 75
-        },
-        {
-            subject: 'subject2',
-            theory: 80,
-            practical: 85
-        }
-    ];
 
+async function submitDcaResult(req, res) {
     try {
-        // Check if the student already exists in the database
-        let existingResult = await dcaResult.findOne({ studentID });
+        const {
+            studentID,
+            dca1a, dca1b, 
+            dca2a, dca2b, dca2c,
+            dca3a, dca3b, dca3c,
+            dcal1a, dcal1b,
+            dcal2a, dcal2b, dcal2c,
+            dcal3a, projectp1,
+            dcal4a, projectp2
+        } = req.body;  // Removed () after req.body
 
-        if (existingResult) {
-            // If the student exists, update their results
-            existingResult.results = results; // Replace the existing results array
-            await existingResult.save(); // Save the updated document
+        // Check if a result already exists for the given studentID
+        let result = await dcaResult.findOne({ studentID });
 
-            return res.status(200).json({ message: 'DCA result updated successfully', data: existingResult });
+        if (result) {
+            // Update existing result
+            result.dca1a = dca1a;
+            result.dca1b = dca1b;
+            result.dca2a = dca2a;
+            result.dca2b = dca2b;
+            result.dca2c = dca2c;
+            result.dca3a = dca3a;
+            result.dca3b = dca3b;
+            result.dca3c = dca3c;
+            result.dcal1a = dcal1a;
+            result.dcal1b = dcal1b;
+            result.dcal2a = dcal2a;
+            result.dcal2b = dcal2b;
+            result.dcal2c = dcal2c;
+            result.dcal3a = dcal3a;
+            result.projectp1 = projectp1;
+            result.dcal4a = dcal4a;
+            result.projectp2 = projectp2;
+
+            await result.save(); // Save updated result
+            res.status(200).send("Result Data Updated Successfully !");
         } else {
-            // If the student doesn't exist, create a new record
-            const newDcaResult = new dcaResult({ studentID, results });
-            await newDcaResult.save(); // Save the new document
+            // Insert new result
+            const newResult = new dcaResult({
+                studentID,
+                dca1a, dca1b,
+                dca2a, dca2b, dca2c,
+                dca3a, dca3b, dca3c,
+                dcal1a, dcal1b,
+                dcal2a, dcal2b, dcal2c,
+                dcal3a, projectp1,
+                dcal4a, projectp2
+            });
 
-            return res.status(201).json({ message: 'DCA result created successfully', data: newDcaResult });
+            await newResult.save(); // Save new result
+            res.status(200).send("Result Data Submitted Successfully !");
         }
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: 'An error occurred', error });
+    } catch (err) {
+        res.status(500).send("An internal error occurred! Try again later.");
     }
-
-
 }
 
-
-module.exports = { registerStudent, searchStudent, deleteStudent, studentImageUpload,
-    dcaResultUpdate,
+module.exports = { registerStudent, searchStudent, deleteStudent, 
+    studentImageUpload, submitDcaResult,
  }

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marks Submission</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #eef2f3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Styling the student details input fields */
+        .student-info {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: center;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .student-info label {
+            font-weight: bold;
+        }
+
+        .student-info input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            background: #f9f9f9;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        input[readonly] {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
+
+        .id-field {
+            width: 120px;
+            text-align: center;
+        }
+
+        .name-field {
+            width: 250px;
+        }
+
+        .email-field {
+            width: 300px;
+        }
+
+        .form-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+            width: 270px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .input-group {
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .submit-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 18px;
+            margin-top: 20px;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .submit-btn:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+
+        /* for login button */
+        .login-button {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .login-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <% if (locals.Admin) { %> 
+    <h2>DCA Student Result Update</h2>  <br><br>
+    <!-- Student Information Fields -->
+     <form action="/admin/dca_result_update" method="post">
+    <div class="student-info">
+        <label>ID</label>
+        <input type="text" class="id-field" value="<%= locals.student.id %>" name="studentID" readonly>
+        
+        <label>Name</label>
+        <input type="text" class="name-field" value="<%= locals.student.name %>" name="name" readonly>
+        
+        <label>Email</label>
+        <input type="text" class="email-field" value="<%= locals.student.email %>" readonly>
+    </div>
+
+    <h4>Theory</h4> <br>
+    <div class="form-container">
+        <!-- Semester 1 -->
+        <div class="card">
+            <h3>Semester 1 (100*2)</h3>
+            
+                <div class="input-group">
+                    <label>IT Tools and Fundamentals:</label>
+                    <input type="number" name="dca1a" >
+                </div>
+                <div class="input-group">
+                    <label>Web Design and publishing:</label>
+                    <input type="number" name="dca1b" >
+                </div>
+        </div>
+
+        <!-- Semester 2 -->
+        <div class="card">
+            <h3>Semester 2 (100*3)</h3>
+                <div class="input-group">
+                    <label>C Programming:</label>
+                    <input type="number" name="dca2a" >
+                </div>
+                <div class="input-group">
+                    <label>Data Base Management System:</label>
+                    <input type="number" name="dca2b" >
+                </div>
+                <div class="input-group">
+                    <label>HTML, XML, PHP:</label>
+                    <input type="number" name="dca2c" >
+                </div>
+        </div>
+
+        <!-- Semester 3 -->
+        <div class="card">
+            <h3>Semester 3 (100*3)</h3>
+                <div class="input-group">
+                    <label>Programming & Problem Solving Through Python:</label>
+                    <input type="number" name="dca3a" >
+                </div>
+                <div class="input-group">
+                    <label>Cyber Security And Protection:</label>
+                    <input type="number" name="dca3b" >
+                </div>
+                <div class="input-group">
+                    <label>Industrial Management & Communication:</label>
+                    <input type="number" name="dca3c" >
+                </div>
+        </div>
+
+        <!-- Semester 4 -->
+        <div class="card">
+            <h3>Semester 4 (100*1)</h3>
+                <div class="input-group">
+                    <label>Application of Java Script:</label>
+                    <input type="number" name="dca4a" >
+                </div>
+        </div>
+    </div>
+
+    <br><br><h4>Practical</h4> <br>
+    <div class="form-container">
+        <!-- Semester 1 -->
+        <div class="card">
+            <h3>Semester 1 (100*2)</h3>
+                <div class="input-group">
+                    <label>IT Tools and Fundamentals:</label>
+                    <input type="number" name="dcal1a" >
+                </div>
+                <div class="input-group">
+                    <label>Web Design and publishing:</label>
+                    <input type="number" name="dcal1b" >
+                </div>
+        </div>
+
+        <!-- Semester 2 -->
+        <div class="card">
+            <h3>Semester 2 (100*3)</h3>
+                <div class="input-group">
+                    <label>C Programming:</label>
+                    <input type="number" name="dcal2a" >
+                </div>
+                <div class="input-group">
+                    <label>Data Base Management System:</label>
+                    <input type="number" name="dcal2b" >
+                </div>
+                <div class="input-group">
+                    <label>HTML, XML, PHP:</label>
+                    <input type="number" name="dcal2c" >
+                </div>
+        </div>
+
+        <!-- Semester 3 -->
+        <div class="card">
+            <h3>Semester 3 (100*1, 50*1)</h3>
+                <div class="input-group">
+                    <label>Programming & Problem Solving Through Python:</label>
+                    <input type="number" name="dcal3a">
+                </div>
+                <div class="input-group">
+                    <label>Project Part 1:</label>
+                    <input type="number" name="projectp1" >
+                </div>
+        </div>
+
+        <!-- Semester 4 -->
+        <div class="card">
+            <h3>Semester 4 (100*1)</h3>
+                <div class="input-group">
+                    <label>Application of Java Script:</label>
+                    <input type="number" name="dcal4a" >
+                </div>
+                <div class="input-group">
+                    <label>Project Part2:</label>
+                    <input type="number" name="projectp2" >
+                </div>
+        </div>
+    </div>
+    <!-- Submit Button -->
+        <button class="submit-btn">Update Result</button>
+    </form>
+    <% } else { %>
+        <a class="login-button" href="/admin/login">Login</a>
+    <% } %>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Student</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+
+        .form_container {
+            margin: auto;
+            width: 600px;
+            height: fit-content;
+        }
+
+        input[type=text],
+        input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #04AA6D;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+
+        .container {
+            padding: 16px;
+        }
+
+
+        /* Table CSS Starts Here */
+        .table_container {
+            margin: auto;
+            width: 1200px;
+            height: fit-content;
+        }
+
+        table {
+            font-family: Arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th{
+            color: white;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #04AA6D;
+        }
+    </style>
+</head>
+
+<body>
+    <br><br><br>
+    <div class="form_container">
+        <form action="/action_page.php" method="post">
+            <div class="container">
+                <h2>Search Student</h2>
+                <input type="text" placeholder="Enter Student ID" name="uname" required>
+
+                <button type="submit">Search</button>
+                <label>
+            </div>
+        </form>
+    </div>
+
+    <h2>Search Result</h2>
+    <div class="table_container">
+        <table>
+            <tr>
+                <th>Student ID</th>
+                <th>Student Name</th>
+                <th>Student Email</th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td>DCAB205</td>
+                <td>Pinaki Chockroborty</td>
+                <td>pinakichockroborty862@gmail.com</td>
+                <td><a href="">Update Result</a></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

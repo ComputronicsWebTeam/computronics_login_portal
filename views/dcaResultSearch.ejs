@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Student for Result Update</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+
+        .form_container {
+            margin: auto;
+            width: 600px;
+            height: fit-content;
+        }
+
+        input[type=text],
+        input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #04AA6D;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        .container {
+            padding: 16px;
+        }
+
+        /* Table CSS Starts Here */
+        .table_container {
+            margin: auto;
+            width: 1200px;
+            height: fit-content;
+        }
+
+        table {
+            font-family: Arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th {
+            color: white;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #04AA6D;
+        }
+
+        /* for login button */
+        .login-button {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .login-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <% if (locals.Admin) { %> 
+        <br><br><br>
+        <div class="form_container">
+            <form action="/admin/dca_result_search" method="post">
+                <div class="container">
+                    <h2>Search Student</h2>
+                    <input type="text" placeholder="Enter Student ID" name="id" required>
+                    <button type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+
+        <% if (locals.studentData) { %>
+            <h2>Search Result</h2>
+            <div class="table_container">
+                <table>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Student Name</th>
+                        <th>Student Email</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <td><%= locals.studentData.studentID %></td>
+                        <td><%= locals.studentData.name %></td>
+                        <td><%= locals.studentData.email %></td>
+                        <td><a href="/admin/dca_result_update?studentID=<%= locals.studentData.studentID %>&name=<%= locals.studentData.name %>&email=<%= locals.studentData.email %>">Update Result</a></td>
+                    </tr>
+                </table>
+            </div>
+        <% } else { %>
+            <p>No student found.</p>
+        <% } %>
+
+    <% } else { %>
+        <a class="login-button" href="/admin/login">Login</a>
+    <% } %>
+</body>
+
+</html>

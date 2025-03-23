@@ -1,12 +1,15 @@
 const express = require('express')
 const router = express.Router()
 const Admin = require('../models/Admin')
+const Student = require('../models/Student')
 const { validateToken } = require('../services/authentication')
-const { checkForAuth, verifyRole } = require('../middlewares/auth')
+const { verifyRole } = require('../middlewares/auth')
 const { sendMail } = require('../services/mail')
 const { registerStudent, searchStudent, deleteStudent, studentImageUpload,
-    dcaResultUpdate
+    submitDcaResult,
  } = require('../controllers/adminController')
+const { log } = require('console')
+
 
 
 // -------------------------------------------------------------------------------
@@ -195,8 +198,38 @@ router.get('/admin/deleteStudent/:id', (req, res)=>{
 // ------------------------------------------------------------
 // Result and Other Links:
 
-router.get('/dca_result_update',(req, res)=>{
-    res.render('dcaResult')
+router.get('/dca_result_search', verifyRole('Admin'), (req, res)=>{
+    res.render('dcaResultSearch', { Admin: req.User })
 })
+
+router.post('/dca_result_search', verifyRole('Admin'), async(req, res)=>{
+    const {id} = req.body
+    try {
+        const student = await Student.findOne({ studentID: id })
+
+            const studentData = {
+                studentID : student.studentID,
+                name : student.name,
+                email : student.email
+            }
+            res.render('dcaResultSearch', { Admin: req.User, studentData })
+        
+    } catch (error) {   
+        res.render('dcaResultSearch', { Admin: req.User })
+    }
+})
+
+router.get('/dca_result_update', verifyRole('Admin'), (req, res) => {
+    const { studentID, name, email } = req.query  // Send the extracted ID as a response
+    const student = {
+        id : studentID,
+        name : name,
+        email : email
+    }
+    res.render('dca_result_update', { Admin: req.User, student: student})
+})
+// for update student result:
+router.post('/dca_result_update', verifyRole('Admin'), submitDcaResult)
+
 
 module.exports = router
