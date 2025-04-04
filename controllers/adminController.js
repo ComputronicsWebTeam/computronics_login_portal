@@ -1,7 +1,7 @@
 const Student = require('../models/Student')
 const StudentImage = require('../models/studentImage')
-const dcaResult = require('../models/dcaResult')
-const multer = require('multer');
+const dcaResult = require('../models/DCA_result')
+const multer = require('multer')
 const { sendMail } = require('../services/mail')
 
 
@@ -181,9 +181,11 @@ async function submitDcaResult(req, res) {
         }
     } catch (err) {
         res.status(500).send("An internal error occurred! Try again later.");
+        console.log(err);
+        
     }
 }
 
 module.exports = { registerStudent, searchStudent, deleteStudent, 
     studentImageUpload, submitDcaResult,
- }
+}
