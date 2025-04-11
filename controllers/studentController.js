@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 const moment = require('moment')
 const Student = require('../models/Student')
+const DCA_Result = require('../models/DCA_result')
 const student_info = require('../models/student_info')
 const StudentImage = require('../models/studentImage')
 const { sendMail } = require('../services/mail')
@@ -46,10 +47,39 @@ async function P_info(req, res) {
         }
 
         res.render('personal_info', { s_info, imageSrc });
-        console.log(s_info);
     } catch (err) {
         console.error('Error fetching student information:', err); // Log the error for debugging
         res.status(500).send('Internal Server Error. Please try again later.');
+    }
+}
+
+// This is the controller function to fetch and render student result details:
+async function Student_result(req, res){
+    try {
+        const Student = req.User; // Getting the Student Object from the req params
+        const student_id = Student.id;
+        // getting the student profile image:
+        const studentImage = await StudentImage.findOne({ studentId: student_id });
+        let imageSrc = null;  // Default to null if no image is found
+        if (studentImage) {
+            // Convert the buffer to base64 encoding to make the image data renderable
+            const imageData = studentImage.image.data.toString('base64');
+            imageSrc = `data:${studentImage.image.contentType};base64,${imageData}`;
+        } else {
+            console.log('No profile image found for student.');
+        }
+        // Getting Student Info.
+        const s_info = await student_info.findOne({ studentID: student_id })
+        // Getting the Student Result
+        const Result = await DCA_Result.findOne({ studentID: student_id })
+
+
+        // Rendering the Output Page:
+        res.render('dca_result', {Student: req.User, imageSrc, s_info, Result});
+        console.log(s_info);
+        
+    } catch (error) {
+        console.log(error);
     }
 }
 
@@ -107,4 +137,6 @@ Computronics
 
 }
 
-module.exports = { StudentLogin, StudentChangePassword, P_info }
+module.exports = { StudentLogin, StudentChangePassword, P_info,
+    Student_result,
+ }

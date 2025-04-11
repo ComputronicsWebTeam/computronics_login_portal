@@ -6,7 +6,7 @@ const { validateToken } = require('../services/authentication')
 const { verifyRole } = require('../middlewares/auth')
 const { sendMail } = require('../services/mail')
 const { registerStudent, searchStudent, deleteStudent, studentImageUpload,
-    submitDcaResult,
+    submitDcaResult, updateReg,
  } = require('../controllers/adminController')
 const { log } = require('console')
 
@@ -193,7 +193,12 @@ router.get('/admin/deleteStudent/:id', (req, res)=>{
     console.log(req.params.id);
 });
 
+// Student Registration and Roll Number Update:
+router.get('/updateRegistrationandRoll', verifyRole('Admin'), (req, res)=>{
+    return res.render('RegUpdate', { Admin: req.User })
+})
 
+router.post('/updateRegistrationandRoll', verifyRole('Admin'), updateReg)
 
 // ------------------------------------------------------------
 // Result and Other Links:

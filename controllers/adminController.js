@@ -1,6 +1,7 @@
 const Student = require('../models/Student')
 const StudentImage = require('../models/studentImage')
 const dcaResult = require('../models/DCA_result')
+const Reg_and_Roll = require('../models/Registration')
 const multer = require('multer')
 const { sendMail } = require('../services/mail')
 
@@ -122,9 +123,23 @@ async function deleteStudent(req, res) {
     }
 }
 
+// for Registration and roll Number Update:
+async function updateReg(req, res){
+    const { studentID, Reg_No, Roll_No } = req.body;
+    console.log(studentID, Reg_No, Roll_No);
+    try {
+        const Preloded = await Reg_and_Roll.findOne({ studentID }); // Fixed syntax
+        if (!Preloded) {
+            await Reg_and_Roll.create({ studentID, Reg_No, Roll_No });
+        }
+        res.status(200).send('Record updated or created.');
+    } catch (error) {
+        res.status(500).send('Something went wrong');
+    }
+}
+
 
 //  for results and other links:
-
 async function submitDcaResult(req, res) {
     try {
         const {
@@ -187,5 +202,5 @@ async function submitDcaResult(req, res) {
 }
 
 module.exports = { registerStudent, searchStudent, deleteStudent, 
-    studentImageUpload, submitDcaResult,
+    studentImageUpload, submitDcaResult, updateReg,
 }
