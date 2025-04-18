@@ -126,13 +126,12 @@ async function deleteStudent(req, res) {
 // for Registration and roll Number Update:
 async function updateReg(req, res){
     const { studentID, Reg_No, Roll_No } = req.body;
-    console.log(studentID, Reg_No, Roll_No);
     try {
         const Preloded = await Reg_and_Roll.findOne({ studentID }); // Fixed syntax
         if (!Preloded) {
             await Reg_and_Roll.create({ studentID, Reg_No, Roll_No });
         }
-        res.status(200).send('Record updated or created.');
+        res.status(200).send('Record Updated or Created Successfully.');
     } catch (error) {
         res.status(500).send('Something went wrong');
     }
@@ -144,37 +143,42 @@ async function submitDcaResult(req, res) {
     try {
         const {
             studentID,
-            dca1a, dca1b, 
-            dca2a, dca2b, dca2c,
-            dca3a, dca3b, dca3c,
-            dcal1a, dcal1b,
-            dcal2a, dcal2b, dcal2c,
-            dcal3a, projectp1,
-            dcal4a, projectp2
-        } = req.body;  // Removed () after req.body
+            it_tools, web_design, 
+            c_programing, dbms, xml_php,
+            python, cyber_security, management,
+            javascript, 
+
+            it_tools_prac, web_design_prac,
+            c_programing_prac, dbms_prac, xml_php_prac,
+            python_prac, project_p1,
+            javascript_prac, project_p2, project_presentation
+        } = req.body;
 
         // Check if a result already exists for the given studentID
         let result = await dcaResult.findOne({ studentID });
 
         if (result) {
             // Update existing result
-            result.dca1a = dca1a;
-            result.dca1b = dca1b;
-            result.dca2a = dca2a;
-            result.dca2b = dca2b;
-            result.dca2c = dca2c;
-            result.dca3a = dca3a;
-            result.dca3b = dca3b;
-            result.dca3c = dca3c;
-            result.dcal1a = dcal1a;
-            result.dcal1b = dcal1b;
-            result.dcal2a = dcal2a;
-            result.dcal2b = dcal2b;
-            result.dcal2c = dcal2c;
-            result.dcal3a = dcal3a;
-            result.projectp1 = projectp1;
-            result.dcal4a = dcal4a;
-            result.projectp2 = projectp2;
+            result.it_tools = it_tools;
+            result.web_design = web_design;
+            result.c_programing = c_programing;
+            result.dbms = dbms;
+            result.xml_php = xml_php;
+            result.python = python;
+            result.cyber_security = cyber_security;
+            result.management = management;
+            result.javascript = javascript;
+
+            result.it_tools_prac = it_tools_prac;
+            result.web_design_prac = web_design_prac;
+            result.c_programing_prac = c_programing_prac;
+            result.dbms_prac = dbms_prac;
+            result.xml_php_prac = xml_php_prac;
+            result.python_prac = python_prac;
+            result.project_p1 = project_p1;
+            result.javascript_prac = javascript_prac;
+            result.project_p2 = project_p2;
+            result.project_presentation = project_presentation;
 
             await result.save(); // Save updated result
             res.status(200).send("Result Data Updated Successfully !");
@@ -182,13 +186,15 @@ async function submitDcaResult(req, res) {
             // Insert new result
             const newResult = new dcaResult({
                 studentID,
-                dca1a, dca1b,
-                dca2a, dca2b, dca2c,
-                dca3a, dca3b, dca3c,
-                dcal1a, dcal1b,
-                dcal2a, dcal2b, dcal2c,
-                dcal3a, projectp1,
-                dcal4a, projectp2
+                it_tools, web_design,
+                c_programing, dbms, xml_php,
+                python, cyber_security, management,
+                javascript,
+
+                it_tools_prac, web_design_prac,
+                c_programing_prac, dbms_prac, xml_php_prac,
+                python_prac, project_p1,
+                javascript_prac, project_p2, project_presentation
             });
 
             await newResult.save(); // Save new result
