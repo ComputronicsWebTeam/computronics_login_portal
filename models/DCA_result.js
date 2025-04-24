@@ -22,10 +22,15 @@ const dcaResultSchema = new mongoose.Schema(
         dbms_prac: {type: Number}, // DBMS
         xml_php_prac: {type: Number}, // XML & PHP
         python_prac: {type: Number}, // Python
-        project_p1: {type: Number}, // Project Part 1
         javascript_prac: {type: Number}, // Javascript
-        project_p2: {type: Number}, // Project Part 2
-        project_presentation: {type: Number}, // Project Presentation 
+        project: {type: Number}, // Project Part 2
+        project_presentation: {type: Number}, // Project Presentation
+        
+        // Other Factors:
+        total: {type: Number},
+        percentage: {type: Number},
+        ogpa: {type: Number},
+        
     },
     { timestamps: true } // This ensures createdAt and updatedAt are automatically added
 );

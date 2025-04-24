@@ -363,14 +363,14 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <center>PROJECT (100+50X2)</center>
+                    <center>PROJECT (100+50)</center>
                 </td>
                 <td>
-                    <center>200</center>
+                    <center>150</center>
                 </td>
                 <td>
                     <center>
-                        <%= Result.project_p1 + Result.project_p2 %>
+                        <%= Result.project %>
                     </center>
                 </td>
             </tr>
@@ -396,11 +396,7 @@
                 </td>
                 <td>
                     <center>
-                        <%= Result.it_tools + Result.web_design + Result.c_programing + Result.dbms + Result.xml_php +
-                            Result.python + Result.cyber_security + Result.management + Result.javascript +
-                            Result.it_tools_prac + Result.web_design_prac + Result.c_programing_prac + Result.dbms_prac
-                            + Result.xml_php_prac + Result.python_prac + Result.project_p1 + Result.javascript_prac +
-                            Result.project_p2 + Result.project_presentation %>
+                        <%= Result.total%>
                     </center>
                 </td>
             </tr>
@@ -425,18 +421,13 @@
                 </td>
                 <td>
                     <center><b>
-                            <%= Result.OGPA.toFixed(2) %>
+                            <%= Result.ogpa %>
                         </b></center>
                 </td>
                 <td>
                     <center><b>
-                            <%= (((Result.it_tools + Result.web_design + Result.c_programing + Result.dbms +
-                                Result.xml_php + Result.python + Result.cyber_security + Result.management +
-                                Result.javascript + Result.it_tools_prac + Result.web_design_prac +
-                                Result.c_programing_prac + Result.dbms_prac + Result.xml_php_prac + Result.python_prac +
-                                Result.project_p1 + Result.javascript_prac + Result.project_p2 +
-                                Result.project_presentation) / 1800) * 100).toFixed(2) %>%
-                        </b></center>
+                            <%= Result.percentage %>%
+                    </b></center>
                 </td>
             </tr>
         </table>

@@ -150,8 +150,10 @@ async function submitDcaResult(req, res) {
 
             it_tools_prac, web_design_prac,
             c_programing_prac, dbms_prac, xml_php_prac,
-            python_prac, project_p1,
-            javascript_prac, project_p2, project_presentation
+            python_prac,
+            javascript_prac, project, project_presentation,
+
+            total, percentage, ogpa,
         } = req.body;
 
         // Check if a result already exists for the given studentID
@@ -175,10 +177,13 @@ async function submitDcaResult(req, res) {
             result.dbms_prac = dbms_prac;
             result.xml_php_prac = xml_php_prac;
             result.python_prac = python_prac;
-            result.project_p1 = project_p1;
             result.javascript_prac = javascript_prac;
-            result.project_p2 = project_p2;
+            result.project = project;
             result.project_presentation = project_presentation;
+
+            result.total = total;
+            result.percentage = percentage;
+            result.ogpa = ogpa;
 
             await result.save(); // Save updated result
             res.status(200).send("Result Data Updated Successfully !");
@@ -193,8 +198,10 @@ async function submitDcaResult(req, res) {
 
                 it_tools_prac, web_design_prac,
                 c_programing_prac, dbms_prac, xml_php_prac,
-                python_prac, project_p1,
-                javascript_prac, project_p2, project_presentation
+                python_prac,
+                javascript_prac, project, project_presentation,
+
+                total, percentage, ogpa,
             });
 
             await newResult.save(); // Save new result
