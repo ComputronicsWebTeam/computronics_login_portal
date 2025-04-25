@@ -78,6 +78,19 @@
             background-color: #f1f1f1;
         }
 
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
 
 
         /* Login Button Css */
@@ -449,7 +462,7 @@
                     <right>Date of issue:</right>
                 </th>
                 <td>
-                    <center><p class="currentDate"></p></center>
+                    <center><p id="c_date"></p></center>
                 </td>
             </tr>
         </table>
@@ -461,6 +474,8 @@
 
         </h4>
         </p>
+        <center><button class="btn" onclick="window.print()">Print</button></center>
+        
 
         <% } else { %>
             <a class="login-button" href="/">Login</a>
@@ -468,15 +483,17 @@
 
 
             <script>
-                const currentDate = new Date();
-            
-                const day = String(currentDate.getDate()).padStart(2, '0');
-                const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-                const year = currentDate.getFullYear();
-            
-                const formattedDate = `${day}/${month}/${year}`;
-            
-                document.getElementById('currentDate').textContent = formattedDate;
+                const today = new Date();
+        
+                const dd = String(today.getDate()).padStart(2, '0');
+                const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+                const yyyy = today.getFullYear();
+        
+                const formattedDate = `${dd}/${mm}/${yyyy}`;
+                
+                const para = document.getElementById('c_date');
+                para.innerText = formattedDate;
+        
             </script>
 </body>
 </html>
