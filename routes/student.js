@@ -5,10 +5,23 @@ const {StudentLogin, StudentChangePassword, P_info,
 } = require('../controllers/studentController')
 const { verifyRole } = require('../middlewares/auth')
 const { validateToken } = require('../services/authentication')
+const StudentImage = require('../models/studentImage')
 
 // Student Dashboard:
-router.get('/dashboard', verifyRole('Student'),(req, res)=>{
-    return res.render('studentDashboard', {Student: req.User})
+router.get('/dashboard', verifyRole('Student'), async(req, res)=>{
+    // getting the student profile image:
+    const studentImage = await StudentImage.findOne({ studentId: req.User.id });
+    let imageSrc = null;  // Default to null if no image is found
+    if (studentImage) {
+        // Convert the buffer to base64 encoding to make the image data renderable
+        const imageData = studentImage.image.data.toString('base64');
+        imageSrc = `data:${studentImage.image.contentType};base64,${imageData}`;
+    } else {
+        console.log('No profile image found for student.');
+    }
+
+    // Rendering the student dashboard
+    return res.render('studentDashboard', {Student: req.User, imageSrc})
 })
 
 // Student Login:

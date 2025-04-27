@@ -75,22 +75,36 @@ async function Student_result(req, res){
         const RegRoll = await RegandRoll.findOne({studentID: student_id})
         // Getting the Student Result
         const Result = await DCA_Result.findOne({ studentID: student_id })
-        // calculating the overall grade point:
-        const sem_1 = ((Result.it_tools + Result.web_design)/200*100)
-        const sem_2 = ((Result.c_programing + Result.dbms + Result.xml_php)/300*100)
-        const sem_3 = ((Result.python + Result.cyber_security + Result.management)/300*100)
-        const sem_4 = ((Result.javascript + Result.project_p1 + Result.project_p2)/300*100)
-
-        const sgpa_1 = (sem_1 + 7.5)/100
-        const sgpa_2 = (sem_2 + 7.5)/100
-        const sgpa_3 = (sem_3 + 7.5)/100
-        const sgpa_4 = (sem_4 + 7.5)/100
-        const OGPA = (sgpa_1, sgpa_2, sgpa_3, sgpa_4)/4
-        Result.OGPA = OGPA
-
         // Rendering the Output Page:
-        res.render('dca_result', {Student: req.User, imageSrc, s_info, RegRoll, Result});
-        
+        if(Result){
+            res.render('dca_result', {Student: req.User, imageSrc, s_info, RegRoll, Result});
+        }
+        else{
+            res.send(`
+                <html>
+                  <head>
+                    <style>
+                      body {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100vh;
+                        background-color: #f8f8f8;
+                      }
+                      .message {
+                        color: #ff4d4f;
+                        font-size: 24px;
+                        font-family: Arial, sans-serif;
+                      }
+                    </style>
+                  </head>
+                  <body>
+                    <div class="message">Your result has not yet been updated on the admin site.</div>
+                  </body>
+                </html>
+              `);
+              
+        }
     } catch (error) {
         console.log(error);
         res.render('dca_result', {Student: req.User})
