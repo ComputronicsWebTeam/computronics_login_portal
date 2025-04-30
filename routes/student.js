@@ -6,6 +6,7 @@ const {StudentLogin, StudentChangePassword, P_info,
 const { verifyRole } = require('../middlewares/auth')
 const { validateToken } = require('../services/authentication')
 const StudentImage = require('../models/studentImage')
+const Student = require('../models/Student')
 
 // Student Dashboard:
 router.get('/dashboard', verifyRole('Student'), async(req, res)=>{
@@ -41,6 +42,11 @@ router.post('/login', StudentLogin)
 
 // Route to render student Personal Information:
 router.get('/p_info', verifyRole('Student'), P_info);
+
+// Route to render Details Page:
+router.get('/details', verifyRole('Student'), (req, res)=>{
+    return res.render('details', {Student: req.User})
+})
 
 // Route to render Result Details:
 router.get('/student_result', verifyRole('Student'), Student_result);
