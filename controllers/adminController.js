@@ -1,4 +1,5 @@
 const Student = require('../models/Student')
+const Student_Info = require('../models/student_info')
 const StudentImage = require('../models/studentImage')
 const dcaResult = require('../models/DCA_result')
 const Reg_and_Roll = require('../models/Registration')
@@ -53,9 +54,20 @@ Computronics`
 
 }
 
+// Student Information Update:
+async function studentInfoUpdate(req, res) {
+    try {
+        const student = new Student_Info(req.body);
+        await student.save();
+        res.send('Student information saved successfully!');
+    } catch (error) {
+        res.status(400).send('Error saving student info: ' + error.message);
+    }
+
+}
+
 
 // Student search function :
-
 const searchStudent = async (req, res) => {
     try {
         const { studentId } = req.body; // Extract studentId from the request body
@@ -124,7 +136,7 @@ async function deleteStudent(req, res) {
 }
 
 // for Registration and roll Number Update:
-async function updateReg(req, res){
+async function updateReg(req, res) {
     const { studentID, Reg_No, Roll_No } = req.body;
     try {
         const Preloded = await Reg_and_Roll.findOne({ studentID }); // Fixed syntax
@@ -143,10 +155,10 @@ async function submitDcaResult(req, res) {
     try {
         const {
             studentID,
-            it_tools, web_design, 
+            it_tools, web_design,
             c_programing, dbms, xml_php,
             python, cyber_security, management,
-            javascript, 
+            javascript,
 
             it_tools_prac, web_design_prac,
             c_programing_prac, dbms_prac, xml_php_prac,
@@ -210,10 +222,11 @@ async function submitDcaResult(req, res) {
     } catch (err) {
         res.status(500).send("An internal error occurred! Try again later.");
         console.log(err);
-        
+
     }
 }
 
-module.exports = { registerStudent, searchStudent, deleteStudent, 
-    studentImageUpload, submitDcaResult, updateReg,
+module.exports = {
+    registerStudent, searchStudent, deleteStudent,
+    studentImageUpload, submitDcaResult, updateReg, studentInfoUpdate
 }

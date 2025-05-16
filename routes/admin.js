@@ -6,58 +6,10 @@ const { validateToken } = require('../services/authentication')
 const { verifyRole } = require('../middlewares/auth')
 const { sendMail } = require('../services/mail')
 const { registerStudent, searchStudent, deleteStudent, studentImageUpload,
-    submitDcaResult, updateReg,
+    submitDcaResult, updateReg, studentInfoUpdate
  } = require('../controllers/adminController')
 const { log } = require('console')
-
-
-
-// -------------------------------------------------------------------------------
-// Only for offline USE not for Production
-
-router.get('/register', (req, res) => {
-    res.render('adminRegister')
-})
-
-
-router.post('/register', async (req, res) => {
-    const { name, email, password } = req.body
-
-    try {
-        // Check if the email already exists
-        const existingAdmin = await Admin.findOne({ email })
-        if (existingAdmin) {
-            return res.status(400).send(`This email : ${email} is already exist`)
-        }
-
-            await Admin.create({ name, email, password })
-            res.send('Admin Registration Successfull')
-
-        // Sending suceesfull email:
-        const sub = 'Welcome to Computronics Web Portal | Admin Login Credential'
-        const message = 
-`Dear ${name},
-
-Congratulations on successfully registering as an Admin on the Computronics Web Portal.
-
-Here are your login credentials:
-ID: ${email}
-Password: ${password}
-
-Please keep this information confidential.
-
-Thank You,
-Computronics`
-        
-        sendMail(email, sub, message)
-
-    } catch (err) {
-        console.error('Error during registration:', err)
-        res.status(500).send('An error occurred during registration')
-    }
-})
-//  not for production 
-// ------------------------------------------------------------------------------------------
+const { verify } = require('crypto')
 
 
 // Admin Control Panel
@@ -177,6 +129,13 @@ router.post('/registerStudent', registerStudent)
 router.get('/searchStudent',verifyRole('Admin'),(req, res)=>{
     return res.render('studentLoginEdit', { Admin: req.User })
 })
+
+// Student Information Update:
+router.get('/student_info_update',verifyRole('Admin'),(req, res)=>{
+    return res.render('student_info_update', { Admin: req.User })
+})
+
+router.post('/student_info_update', verifyRole('Admin'), studentInfoUpdate)
 
 // for searhcing student
 router.post('/searchStudent', verifyRole('Admin'), searchStudent)

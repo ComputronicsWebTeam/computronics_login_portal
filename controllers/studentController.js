@@ -3,6 +3,7 @@ const moment = require('moment')
 const Student = require('../models/Student')
 const DCA_Result = require('../models/DCA_result')
 const student_info = require('../models/student_info')
+const Student_RegRoll = require('../models/Registration')
 const StudentImage = require('../models/studentImage')
 const RegandRoll = require('../models/Registration')
 const { sendMail } = require('../services/mail')
@@ -29,7 +30,7 @@ async function P_info(req, res) {
     try {
         const student_id = req.User.id;  // Getting the student id from the request parameter
         const s_info = await student_info.findOne({ studentID: student_id });
-
+        const Reg_Roll = await Student_RegRoll.findOne({studentID: student_id})
         if (!s_info) {
             return res.status(404).send('Student information not found');
         }
@@ -47,7 +48,7 @@ async function P_info(req, res) {
             console.log('No profile image found for student.');
         }
 
-        res.render('personal_info', { s_info, imageSrc });
+        res.render('personal_info', { s_info, imageSrc, Reg_Roll});
     } catch (err) {
         console.error('Error fetching student information:', err); // Log the error for debugging
         res.status(500).send('Internal Server Error. Please try again later.');

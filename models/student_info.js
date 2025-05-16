@@ -28,11 +28,11 @@ const Student_info_Schema = new mongoose.Schema({
     trim: true
   },
   dob: {
-    type: Date,
+    type: String,
     required: true,
   },
   doa: {
-    type: Date,
+    type: String,
     required: true,
   },
   address: {
@@ -46,6 +46,10 @@ const Student_info_Schema = new mongoose.Schema({
     match: [/^\d{10}$/, 'Contact number must be 10 digits'] // Validate 10-digit phone number
   },
   schoolOrCollege: {  
+    type: String,
+    required: true,
+  },
+  Acadamics: {
     type: String,
     required: true,
   }
