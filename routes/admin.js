@@ -6,7 +6,7 @@ const { validateToken } = require('../services/authentication')
 const { verifyRole } = require('../middlewares/auth')
 const { sendMail } = require('../services/mail')
 const { registerStudent, searchStudent, deleteStudent, studentImageUpload,
-    submitDcaResult, updateReg, studentInfoUpdate
+    submit_ataglance, submitDcaResult, updateReg, studentInfoUpdate
  } = require('../controllers/adminController')
 const { log } = require('console')
 const { verify } = require('crypto')
@@ -160,8 +160,15 @@ router.get('/updateRegistrationandRoll', verifyRole('Admin'), (req, res)=>{
 router.post('/updateRegistrationandRoll', verifyRole('Admin'), updateReg)
 
 // ------------------------------------------------------------
-// Result and Other Links:
 
+// Student at a glance update route:
+router.get('/at_a_glance_update', verifyRole('Admin'), (req, res)=>{
+    return res.render('at_a_glance_update', { Admin: req.User })
+})
+
+router.post('/at_a_glance_update', verifyRole('Admin'), submit_ataglance)
+
+// DCA result Update 
 router.get('/dca_result_search', verifyRole('Admin'), (req, res)=>{
     res.render('dcaResultSearch', { Admin: req.User })
 })

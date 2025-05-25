@@ -1,12 +1,14 @@
 const mongoose = require('mongoose')
 const moment = require('moment')
 const Student = require('../models/Student')
+const course_completed = require('../models/At_a_glance')
 const DCA_Result = require('../models/DCA_result')
 const student_info = require('../models/student_info')
 const Student_RegRoll = require('../models/Registration')
 const StudentImage = require('../models/studentImage')
 const RegandRoll = require('../models/Registration')
 const { sendMail } = require('../services/mail')
+const { log } = require('console')
 
 async function StudentLogin(req, res) {
     const { studentID, password } = req.body
@@ -54,6 +56,24 @@ async function P_info(req, res) {
         res.status(500).send('Internal Server Error. Please try again later.');
     }
 }
+
+// At a Glance Render Function:
+async function Student_ataglance(req, res){
+    try {
+        const Student = req.User; // Getting the Student Object from the req params
+        const student_id = Student.id;
+
+        // Getting student basic info.:
+        const s_info = await student_info.findOne({ studentID: student_id })
+        // Getting course completed data:
+        const c_completed = await course_completed.findOne({ studentID: student_id })
+
+        return res.render('student_at_a_glance', {Student: req.User, s_info, c_completed}) // Rendering the output
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 // This is the controller function to fetch and render student result details:
 async function Student_result(req, res){
@@ -167,5 +187,5 @@ Computronics
 }
 
 module.exports = { StudentLogin, StudentChangePassword, P_info,
-    Student_result,
+    Student_result, Student_ataglance, 
  }

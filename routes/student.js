@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const {StudentLogin, StudentChangePassword, P_info,
-    Student_result,
+    Student_result, Student_ataglance
 } = require('../controllers/studentController')
 const { verifyRole } = require('../middlewares/auth')
 const { validateToken } = require('../services/authentication')
@@ -47,6 +47,9 @@ router.get('/p_info', verifyRole('Student'), P_info);
 router.get('/details', verifyRole('Student'), (req, res)=>{
     return res.render('details', {Student: req.User})
 })
+
+// Route to render At a Glance;
+router.get('/at_a_glance', verifyRole('Student'), Student_ataglance)
 
 // Route to render Result Details:
 router.get('/student_result', verifyRole('Student'), Student_result);

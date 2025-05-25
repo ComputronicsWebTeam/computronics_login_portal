@@ -1,6 +1,7 @@
 const Student = require('../models/Student')
 const Student_Info = require('../models/student_info')
 const StudentImage = require('../models/studentImage')
+const At_a_glance = require('../models/At_a_glance')
 const dcaResult = require('../models/DCA_result')
 const Reg_and_Roll = require('../models/Registration')
 const multer = require('multer')
@@ -149,6 +150,29 @@ async function updateReg(req, res) {
     }
 }
 
+// For at a Glance Update:
+async function submit_ataglance(req, res) {
+  try {
+    const { studentId, items } = req.body;
+
+    const sanitizedItems = items.map(item => ({
+      Course: item.Course,
+      Marks: Number(item.Marks)
+    }));
+
+    await At_a_glance.findOneAndUpdate(
+      { studentID: studentId },            // Filter
+      { items: sanitizedItems },           // Update
+      { upsert: true, new: true }          // Create if not exists, return updated doc
+    );
+
+    return res.status(201).render('submit_successfull', {messege: "Submitted Successfully!"});
+    
+  } catch (error) {
+    return res.status(500).render('Error_message', {message: "Internal Server Error"});
+  }
+}
+
 
 //  for results and other links:
 async function submitDcaResult(req, res) {
@@ -228,5 +252,6 @@ async function submitDcaResult(req, res) {
 
 module.exports = {
     registerStudent, searchStudent, deleteStudent,
-    studentImageUpload, submitDcaResult, updateReg, studentInfoUpdate
+    studentImageUpload, submitDcaResult, updateReg,
+    studentInfoUpdate, submit_ataglance,
 }

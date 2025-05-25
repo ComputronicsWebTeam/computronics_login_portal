@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>At a Glance Cousre Update</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 60px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-section {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            transition: border-color 0.3s;
+            font-size: 14px;
+        }
+
+        input[type="text"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .input-pair {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .input-pair input {
+            width: 100%;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .login-button {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .login-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script>
+        let fieldCount = 0;
+
+        function addField() {
+            fieldCount++;
+            const container = document.getElementById("inputsContainer");
+
+            const pairDiv = document.createElement("div");
+            pairDiv.className = "input-pair";
+
+            const keyInput = document.createElement("input");
+            keyInput.type = "text";
+            keyInput.name = `items[${fieldCount}][Course]`;
+            keyInput.placeholder = `Course ${fieldCount}`;
+            keyInput.required = true;
+
+            const valueInput = document.createElement("input");
+            valueInput.type = "number";
+            valueInput.name = `items[${fieldCount}][Marks]`;
+            valueInput.placeholder = `Marks ${fieldCount}`;
+            valueInput.required = true;
+
+            pairDiv.appendChild(keyInput);
+            pairDiv.appendChild(valueInput);
+            container.appendChild(pairDiv);
+        }
+    </script>
+</head>
+<body>
+<% if (locals.Admin) { %>
+    <div class="container">
+        <h2>Course Completed Update Form</h2>
+
+        <form action="/admin/at_a_glance_update" method="POST">
+            <!-- Student ID Field -->
+            <div class="form-section">
+                <label for="studentId">Student ID:</label>
+                <input type="text" id="studentId" name="studentId" placeholder="Enter Student ID" required>
+            </div>
+
+            <!-- Dynamic Course/Marks Fields -->
+            <div id="inputsContainer"></div>
+
+            <div class="button-group">
+                <button type="button" onclick="addField()">Add Course/Marks Pair</button>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+<% } else { %>
+    <a class="login-button" href="/admin/login">Login</a>
+<% } %>
+</body>
+</html>
