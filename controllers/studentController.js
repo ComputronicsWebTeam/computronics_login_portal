@@ -1,14 +1,13 @@
 const mongoose = require('mongoose')
-const moment = require('moment')
 const Student = require('../models/Student')
 const course_completed = require('../models/At_a_glance')
+const Activities = require('../models/Activities')
 const DCA_Result = require('../models/DCA_result')
 const student_info = require('../models/student_info')
 const Student_RegRoll = require('../models/Registration')
 const StudentImage = require('../models/studentImage')
 const RegandRoll = require('../models/Registration')
 const { sendMail } = require('../services/mail')
-const { log } = require('console')
 
 async function StudentLogin(req, res) {
     const { studentID, password } = req.body
@@ -71,6 +70,22 @@ async function Student_ataglance(req, res){
         return res.render('student_at_a_glance', {Student: req.User, s_info, c_completed}) // Rendering the output
     } catch (error) {
         console.log(error);
+    }
+}
+
+async function activities_render(req, res){
+    try {
+        const Student = req.User; // Getting the Student Object from the req params
+        const student_id = Student.id;
+
+        // Getting student basic info.:
+        const s_info = await student_info.findOne({ studentID: student_id })
+        // Getting Activities data:
+        const activities = await Activities.findOne({studentID: student_id})
+
+        return res.render('activities', {Student: req.User, s_info, activities}) // Rendering the Output
+    } catch (error) {
+
     }
 }
 
@@ -187,5 +202,5 @@ Computronics
 }
 
 module.exports = { StudentLogin, StudentChangePassword, P_info,
-    Student_result, Student_ataglance, 
+    Student_result, Student_ataglance, activities_render,
  }

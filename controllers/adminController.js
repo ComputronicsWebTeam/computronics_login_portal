@@ -2,6 +2,7 @@ const Student = require('../models/Student')
 const Student_Info = require('../models/student_info')
 const StudentImage = require('../models/studentImage')
 const At_a_glance = require('../models/At_a_glance')
+const Activities = require('../models/Activities')
 const dcaResult = require('../models/DCA_result')
 const Reg_and_Roll = require('../models/Registration')
 const multer = require('multer')
@@ -173,6 +174,67 @@ async function submit_ataglance(req, res) {
   }
 }
 
+// for students activities update:
+async function submit_activities(req, res) {
+  try {
+    const {
+      student_id,
+      scholarship = [],
+      award = [],
+      position = [],
+      psdp = [],
+      seminar = [],
+      training = [],
+      others = []
+    } = req.body;
+
+    if (!student_id || student_id.trim() === "") {
+      return res.status(400).send("student_id is required");
+    }
+
+    const makeArrayOfDesc = (arr) =>
+      Array.isArray(arr)
+        ? arr.filter(item => item && item.trim() !== '').map(item => ({ desc: item.trim() }))
+        : [];
+
+    // Get existing activity
+    const existing = await Activities.findOne({ studentID: student_id });
+
+    const activityData = {
+      studentID: student_id,
+      scholership: makeArrayOfDesc(scholarship),
+      award_recived: makeArrayOfDesc(award),
+      position_secured: makeArrayOfDesc(position),
+      psdp: makeArrayOfDesc(psdp),
+      seminar_workshop: makeArrayOfDesc(seminar),
+      training: makeArrayOfDesc(training),
+      others: makeArrayOfDesc(others),
+    };
+
+    // Merge: if new field is empty, use old data
+    if (existing) {
+      activityData.scholership = activityData.scholership.length > 0 ? activityData.scholership : existing.scholership;
+      activityData.award_recived = activityData.award_recived.length > 0 ? activityData.award_recived : existing.award_recived;
+      activityData.position_secured = activityData.position_secured.length > 0 ? activityData.position_secured : existing.position_secured;
+      activityData.psdp = activityData.psdp.length > 0 ? activityData.psdp : existing.psdp;
+      activityData.seminar_workshop = activityData.seminar_workshop.length > 0 ? activityData.seminar_workshop : existing.seminar_workshop;
+      activityData.training = activityData.training.length > 0 ? activityData.training : existing.training;
+      activityData.others = activityData.others.length > 0 ? activityData.others : existing.others;
+    }
+
+    // Update or create
+    await Activities.findOneAndUpdate(
+      { studentID: student_id },
+      activityData,
+      { upsert: true, new: true, runValidators: true }
+    );
+
+    return res.status(201).render('submit_successfull', {messege: "Data Updated Successfully!"});
+  } catch (error) {
+    return res.status(500).render('Error_message', {message: "Internal Server Error"});
+  }
+}
+
 
 //  for results and other links:
 async function submitDcaResult(req, res) {
@@ -253,5 +315,5 @@ async function submitDcaResult(req, res) {
 module.exports = {
     registerStudent, searchStudent, deleteStudent,
     studentImageUpload, submitDcaResult, updateReg,
-    studentInfoUpdate, submit_ataglance,
+    studentInfoUpdate, submit_ataglance, submit_activities,
 }

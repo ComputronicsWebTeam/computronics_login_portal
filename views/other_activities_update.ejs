@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Student Activities Update</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            background: #e5e7e9;
+            padding: 30px;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            margin: 6px 0;
+            width: 90%;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+
+        .input-section {
+            display: inline-block;
+            vertical-align: top;
+            margin: 10px;
+            background-color: #ffffff;
+            padding: 15px 12px;
+            border-radius: 12px;
+            width: 200px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .input-section:hover {
+            transform: scale(1.02);
+        }
+
+        .input-section .fields {
+            margin-bottom: 12px;
+        }
+
+        .input-section h3 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 18px;
+            color: #0077b6;
+            letter-spacing: 0.5px;
+        }
+
+        .input-section button {
+            background-color: #0077b6;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .input-section button:hover {
+            background-color: #005f87;
+        }
+
+        .submit-btn {
+            background-color: #00b894;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            color: white;
+            margin-top: 30px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #019172;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .input-section .fields::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .input-section .fields::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 5px;
+        }
+
+        /* Login Button CSS */
+        .login-button {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .login-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+<% if (locals.Admin) { %>
+    <h1>Student Activities Update</h1>
+
+    <form action="/admin/other_activities_update" method="POST">
+        <input type="text" name="student_id" placeholder="Enter Student ID"
+            style="padding: 10px; width: 300px; border: none; border-radius: 5px;" required><br>
+
+        <div class="container">
+            <div class="input-section" id="scholarship">
+                <h3>Scholership</h3>
+                <div class="fields"></div>
+                <button type="button" onclick="addField('scholarship', 'scholarship[]')">Add input field</button>
+            </div>
+
+            <div class="input-section" id="award">
+                <h3>Award Received</h3>
+                <div class="fields"></div>
+                <button type="button" onclick="addField('award', 'award[]')">Add input field</button>
+            </div>
+
+            <div class="input-section" id="position">
+                <h3>Position Secured</h3>
+                <div class="fields"></div>
+                <button type="button" onclick="addField('position', 'position[]')">Add input field</button>
+            </div>
+
+            <div class="input-section" id="psdp">
+                <h3>PSDP</h3>
+                <div class="fields"></div>
+                <button type="button" onclick="addField('psdp', 'psdp[]')">Add input field</button>
+            </div>
+
+            <div class="input-section" id="seminar">
+                <h3>Seminar & Workshop</h3>
+                <div class="fields"></div>
+                <button type="button" onclick="addField('seminar', 'seminar[]')">Add input field</button>
+            </div>
+
+            <div class="input-section" id="training">
+                <h3>Training</h3>
+                <div class="fields"></div>
+                <button type="button" onclick="addField('training', 'training[]')">Add input field</button>
+            </div>
+
+            <div class="input-section" id="others">
+                <h3>Others</h3>
+                <div class="fields"></div>
+                <button type="button" onclick="addField('others', 'others[]')">Add input field</button>
+            </div>
+        </div>
+
+        <br>
+        <button class="submit-btn" type="submit">Submit</button>
+    </form>
+
+    <script>
+        function addField(sectionId, fieldName) {
+            const section = document.getElementById(sectionId).querySelector('.fields');
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = fieldName;
+            input.placeholder = 'Enter value';
+            section.appendChild(input);
+        }
+    </script>
+    <% } else { %>
+        <a class="login-button" href="/admin/login">Login</a>
+    <% } %>
+</body>
+
+</html>
