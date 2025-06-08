@@ -81,7 +81,39 @@
         .main_content table tr:nth-child(even) {
             background-color: #f9f9f9;
         }
+        /* Print Button CSS */
+        /* Print button CSS */
+        .print-button {
+            display: inline-block;
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
+        .print-button:hover {
+            background-color: #1e7e34;
+        }
+
+        @media print {
+            body {
+                zoom: 97%;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .print-button {
+                display: none !important;
+            }
+        }
+
+        /* Login button CSS */
         .login-button {
             display: inline-block;
             background-color: #007bff;
@@ -176,6 +208,7 @@
                 </table>
             </div>
         </div>
+        <center><button class="print-button" onclick="window.print()">🖨️ Print Page</button></center>
         <% } else { %>
             <a class="login-button" href="/">Login</a>
             <% } %>

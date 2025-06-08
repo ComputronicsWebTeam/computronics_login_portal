@@ -49,7 +49,7 @@ async function P_info(req, res) {
             console.log('No profile image found for student.');
         }
 
-        res.render('personal_info', { s_info, imageSrc, Reg_Roll});
+        return res.render('personal_info', { Student: req.User, s_info, imageSrc, Reg_Roll});
     } catch (err) {
         console.error('Error fetching student information:', err); // Log the error for debugging
         res.status(500).send('Internal Server Error. Please try again later.');

@@ -4,46 +4,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Information</title>
+    <title>Student Info</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-        }
-        .address{
-            font-size: 15px;
+            background: #f4f7f9;
+            color: #333;
         }
 
         .container {
-            width: 80%;
-            margin: 0 auto;
-            background-color: white;
-            padding: 20px;
+            max-width: 800px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .header-content {
-            text-align: center;
-            margin-bottom: 30px;
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
         }
 
-        .header-content h1 {
-            font-size: 3em;
-            /* Slightly bigger */
-            color: #2c3e50;
-            margin: 0;
+        .header-text {
+            flex: 1 1 60%;
         }
 
-        .header-content p {
-            font-size: 1.5em;
-            /* Slightly bigger */
-            color: #34495e;
-            margin: 5px 0 0 0;
+        .header-images {
+            flex: 1 1 35%;
+            text-align: right;
         }
 
+        .header-images img {
+            max-height: 80px;
+            margin-left: 10px;
+        }
+
+        /* Main content CSS */
         .profile_image {
             width: 200px;
             height: 200px;
@@ -106,121 +109,154 @@
             color: #34495e;
         }
 
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-            font-size: 1em;
-            color: #7f8c8d;
-        }
-
-        .button-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .btn {
-            background-color: #4CAF50;
+        /* Print button CSS */
+        .print-button {
+            display: inline-block;
+            background-color: #28a745;
             color: white;
-            border: none;
             padding: 10px 20px;
+            margin-bottom: 20px;
             font-size: 16px;
+            font-weight: bold;
+            border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
 
-        .btn:hover {
-            background-color: #45a049;
+        .print-button:hover {
+            background-color: #1e7e34;
+        }
+
+        @media print {
+            body {
+                zoom: 97%;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .print-button {
+                display: none !important;
+            }
+        }
+
+        /* Login Button CSS */
+        .login-button {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .login-button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 
 <body>
+    <% if (locals.Student) { %>
+        <div class="container">
+            <div class="header">
+                <div class="header-text">
+                    <h1>Computronics</h1>
+                    <h3>A Gateway to Computer World</h3>
+                    <p>5 No. Serampore Colony, Rajyadharpore (S), Near ESI Hospital,
+                        Hooghly, West Bengal</p>
+                </div>
+                <div class="header-images">
+                    <img src="/public/main_logo.png" alt="Main Logo">
+                    <img src="/public/QR-Web-MS.png" alt="QR Code">
+                </div>
+                <hr style="width: 100%; height: 2px; background-color: #007bff; border: none; margin: 20px 0;">
+            </div>
 
-    <div class="container">
-        <div class="header-content">
-            <h1>Computronics</h1>
-            <p>A Gateway to Computer World</p>
-            <p class="address">5 No. Serampore Colony, Rajyadharpore (S), Near ESI Hospital, <br> Hooghly, West Bengal</p>
-            <img src="/public/main_logo.png" alt="main_logo" height="80px" width="120px">
+            <!-- Main content -->
+            <img class="profile_image" src="<%= imageSrc %>" alt="Student Image" />
+            <h3 class="s_name">
+                <%= s_info.name %>
+            </h3>
+            <table>
+                <tr>
+                    <th>Father's Name:</th>
+                    <td>
+                        <%= s_info.fatherName %>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Date of Birth:</th>
+                    <td>
+                        <%= s_info.dob %>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Date of Admission:</th>
+                    <td>
+                        <%= s_info.doa %>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Roll No:</th>
+                    <td>
+                        <%= Reg_Roll.Reg_No %>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Registration No:</th>
+                    <td>
+                        <%= Reg_Roll.Roll_No %>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Address:</th>
+                    <td>
+                        <%= s_info.address %>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Contact:</th>
+                    <td>
+                        <%= s_info.contact %>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Email ID:</th>
+                    <td>
+                        <%= s_info.email %>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Name of School & College:</th>
+                    <td>
+                        <%= s_info.schoolOrCollege %>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Latest Academics:</th>
+                    <td>
+                        <%= s_info.Acadamics %>
+                    </td>
+                </tr>
+            </table>
         </div>
-
-        <hr width="800px"> <br><br><br>
-
-        <img class="profile_image" src="<%= imageSrc %>" alt="Student Image" />
-        <h3 class="s_name">
-            <%= s_info.name %>
-        </h3>
-        <table>
-            <tr>
-                <th>Father's Name:</th>
-                <td>
-                    <%= s_info.fatherName %>
-                </td>
-            </tr>
-
-            <tr>
-                <th>Date of Birth:</th>
-                <td>
-                    <%= s_info.dob %>
-                </td>
-            </tr>
-            <tr>
-                <th>Date of Admission:</th>
-                <td>
-                    <%= s_info.doa %>
-                </td>
-            </tr>
-            <tr>
-                <th>Roll No:</th>
-                <td>
-                    <%= Reg_Roll.Reg_No %>
-                </td>
-            </tr>
-            <tr>
-                <th>Registration No:</th>
-                <td>
-                    <%= Reg_Roll.Roll_No %>
-                </td>
-            </tr>
-            <tr>
-                <th>Address:</th>
-                <td>
-                    <%= s_info.address %>
-                </td>
-            </tr>
-            <tr>
-                <th>Contact:</th>
-                <td>
-                    <%= s_info.contact %>
-                </td>
-            </tr>
-            <tr>
-                <th>Email ID:</th>
-                <td>
-                    <%= s_info.email %>
-                </td>
-            </tr>
-            <tr>
-                <th>Name of School & College:</th>
-                <td>
-                    <%= s_info.schoolOrCollege %>
-                </td>
-            </tr>
-            <tr>
-                <th>Latest Academics:</th>
-                <td>
-                    <%= s_info.Acadamics %>
-                </td>
-            </tr>
-        </table>
-
-        <div class="button-container">
-            <button class="btn" onclick="window.print()">Print</button>
-        </div>
-    </div>
+        <center><button class="print-button" onclick="window.print()">🖨️ Print Page</button></center>
 
 
+        <% } else { %>
+            <a class="login-button" href="/">Login</a>
+            <% } %>
 </body>
 
 </html>
