@@ -5,13 +5,15 @@ const At_a_glance = require('../models/At_a_glance')
 const Activities = require('../models/Activities')
 const dcaResult = require('../models/DCA_result')
 const Reg_and_Roll = require('../models/Registration')
+const NoticeImage = require('../models/NoticeImage')
 const multer = require('multer')
 const { sendMail } = require('../services/mail')
 
 
 // Multer Configuration for File Uploads
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage }).single('studentPhoto');
+const upload = multer({ storage: storage }).single('studentPhoto');  // for student profile
+const noticeUpload = multer({ storage: storage }).single('image'); // for notice upload
 
 
 // New Student Register Controller Function:
@@ -312,8 +314,73 @@ async function submitDcaResult(req, res) {
     }
 }
 
+// Controller Function for Notice Insert:
+async function add_notice(req, res) {
+    noticeUpload(req, res, async (err) => {
+        if (err) {
+            console.error("Multer error:", err);
+            return res.status(400).send("Error uploading image.");
+        }
+
+        const { text: noticeHeading, noticeDescription: description } = req.body;
+
+        // Basic validation (optional, but good practice)
+        if (!noticeHeading || !description) {
+            return res.status(400).render('Error_message', { message: "Heading and Description are required." });
+        }
+
+        try {
+            const newNotice = new NoticeImage({
+                noticeHeading,
+                description
+            });
+
+            // Only set image if it exists
+            if (req.file) {
+                newNotice.image = {
+                    data: req.file.buffer,
+                    contentType: req.file.mimetype
+                };
+            }
+
+            await newNotice.save();
+            return res.status(201).render('submit_successfull', { messege: "Notice Uploaded Successfully!" });
+
+        } catch (error) {
+            console.error("Error saving notice:", error);
+            return res.status(500).render('Error_message', { message: "Internal Server Error" });
+        }
+    });
+}
+
+
+// controller for the api to send Notice:
+async function send_notice(req, res){
+      try {
+        const notices = await NoticeImage.find().sort({ createdAt: -1 });
+
+        // Convert buffer image to base64 to send via JSON
+        const formattedNotices = notices.map(notice => ({
+            _id: notice._id,
+            noticeHeading: notice.noticeHeading,
+            description: notice.description,
+            createdAt: notice.createdAt,
+            updatedAt: notice.updatedAt,
+            image: notice.image && notice.image.data 
+                ? `data:${notice.image.contentType};base64,${notice.image.data.toString('base64')}` 
+                : null
+        }));
+
+        res.json(formattedNotices);
+    } catch (err) {
+        console.error("Error fetching notices:", err);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
 module.exports = {
     registerStudent, searchStudent, deleteStudent,
     studentImageUpload, submitDcaResult, updateReg,
     studentInfoUpdate, submit_ataglance, submit_activities,
+    add_notice, send_notice, 
 }

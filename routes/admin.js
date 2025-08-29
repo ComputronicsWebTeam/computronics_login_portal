@@ -7,7 +7,7 @@ const { verifyRole } = require('../middlewares/auth')
 const { sendMail } = require('../services/mail')
 const { registerStudent, searchStudent, deleteStudent, studentImageUpload,
     submit_ataglance, submitDcaResult, updateReg, studentInfoUpdate,
-    submit_activities,
+    submit_activities,add_notice, send_notice, 
  } = require('../controllers/adminController')
 const { log } = require('console')
 const { verify } = require('crypto')
@@ -210,6 +210,13 @@ router.get('/dca_result_update', verifyRole('Admin'), (req, res) => {
 // for update student result:
 router.post('/dca_result_update', verifyRole('Admin'), submitDcaResult)
 
+// Notice Releted Links ------------------------------
+router.get('/add_notice', verifyRole('Admin'), (req, res) =>{
+    res.render('add_notice',{Admin: req.User})
+})
+router.post('/add_notice', verifyRole('Admin'), add_notice)
+
+router.get('/get_notice', send_notice);
 
 
 

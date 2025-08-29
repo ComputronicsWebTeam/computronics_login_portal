@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <title>Admin | <%= Admin ? Admin.name : "??" %>
+    </title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .upload-card {
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .upload-card h2 {
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .input-group {
+            margin-bottom: 1.2rem;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #444;
+        }
+
+        input[type="text"],
+        input[type="file"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s ease;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            resize: vertical;
+            transition: border 0.3s ease;
+        }
+
+        textarea:focus {
+            border-color: #6c63ff;
+            outline: none;
+        }
+
+        input[type="text"]:focus,
+        input[type="file"]:focus {
+            border-color: #6c63ff;
+            outline: none;
+        }
+
+        .submit-btn {
+            background-color: #6c63ff;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #5848d6;
+        }
+
+        @media (max-width: 480px) {
+            .upload-card {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Login Button CSS */
+        .login-button {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .login-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <% if (locals.Admin) { %>
+        <div class="upload-card">
+            <h2>Upload Notice Image</h2>
+            <form action="/admin/add_notice" method="post" enctype="multipart/form-data">
+                <div class="input-group">
+                    <label for="textInput">Enter Notice Heading:</label>
+                    <input type="text" id="textInput" name="text" placeholder="Notice Heading" required />
+                </div>
+
+                <div class="input-group">
+                    <label for="noticeDescription">Enter Notice Description:</label>
+                    <textarea id="noticeDescription" name="noticeDescription" placeholder="Notice Description" rows="4"
+                        required></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="imageInput">Upload Image:</label>
+                    <input type="file" id="imageInput" name="image" accept="image/*" />
+                </div>
+
+                <button type="submit" class="submit-btn">Submit</button>
+            </form>
+        </div>
+        <% } else { %>
+            <a class="login-button" href="/admin/login">Login</a>
+            <% } %>
+</body>
+
+</html>

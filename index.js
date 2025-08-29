@@ -5,9 +5,13 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const adminRouter = require('./routes/admin')
 const studentRouter = require('./routes/student')
+const cors = require('cors') // for api use
 
 
 const app = express()   
+
+// cors initialization for   api setup
+app.use(cors())
 
 const PORT = process.env.PORT || 3000
 

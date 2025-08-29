@@ -8,6 +8,7 @@ const Student_RegRoll = require('../models/Registration')
 const StudentImage = require('../models/studentImage')
 const RegandRoll = require('../models/Registration')
 const { sendMail } = require('../services/mail')
+const { log } = require('console')
 
 async function StudentLogin(req, res) {
     const { studentID, password } = req.body
@@ -29,8 +30,9 @@ async function StudentLogin(req, res) {
 
 async function P_info(req, res) {
     try {
-        const student_id = req.User.id;  // Getting the student id from the request parameter
+        const student_id = req.User.id.trim();  // Getting the student id from the request parameter
         const s_info = await student_info.findOne({ studentID: student_id });
+        
         const Reg_Roll = await Student_RegRoll.findOne({studentID: student_id})
         if (!s_info) {
             return res.status(404).send('Student information not found');
@@ -38,9 +40,7 @@ async function P_info(req, res) {
 
         // getting the student profile image:
         const studentImage = await StudentImage.findOne({ studentId: student_id });
-
         let imageSrc = null;  // Default to null if no image is found
-
         if (studentImage) {
             // Convert the buffer to base64 encoding to make the image data renderable
             const imageData = studentImage.image.data.toString('base64');
@@ -48,7 +48,7 @@ async function P_info(req, res) {
         } else {
             console.log('No profile image found for student.');
         }
-
+        
         return res.render('personal_info', { Student: req.User, s_info, imageSrc, Reg_Roll});
     } catch (err) {
         console.error('Error fetching student information:', err); // Log the error for debugging
@@ -85,7 +85,7 @@ async function activities_render(req, res){
 
         return res.render('activities', {Student: req.User, s_info, activities}) // Rendering the Output
     } catch (error) {
-
+        
     }
 }
 
